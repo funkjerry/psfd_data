@@ -1,0 +1,84 @@
+---
+---
+
+```{r}
+library(dplyr)
+library(haven)
+library(plyr)
+library(tidyr)
+
+df1999 <- read_sav(file = "RI1999.sav")
+df2000 <- read_sav(file = "RI2000.sav")
+df2001 <- read_sav(file = "RII2001.sav")
+
+df2000 %>%
+  filter(id %in% df2001$id)%>%
+  select(id, grad_y, grad, indust, occu, workfor, workers, workplace, fwork_indust, fwork_occu, fworkfor, fwage, marry, Sbirth_y, Sedu, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace)->df20
+merge(df2001,df20,by="id",all.x=TRUE)->df21
+names(df21)
+name<-c("id","grad_y","grad","fwork_indust","fwork_occu","fworkfor","fwage","Sworkers","Sworkplace")
+
+
+df21$indust<-ifelse(df21$c01b==1,
+df21$indust.y,df21$indust.x)
+df21$occu<-ifelse(df21$c01b==1,
+df21$occu.y,df21$occu.x)
+df21$workfor<-ifelse(df21$c01b==1,
+df21$workfor.y,df21$workfor.x)
+df21$workers<-ifelse(df21$c01b==1,
+df21$workers.y,df21$workers.x)
+df21$workplace<-ifelse(df21$c01b==1,
+df21$workplace.y,df21$workplace.x)
+df21$marry <- ifelse((df21$c21a==2), df21$marry.y, df21$marry.x)
+df21$Sbirth_y <- ifelse((df21$c21a==1), df21$Sbirth_y.y, df21$Sbirth_y.x)
+df21$Sedu <- ifelse((df21$c21a==1),
+df21$Sedu.y, df21$Sedu.x)
+df21$Sindust <- ifelse((df21$c26b==1),
+df21$Sindust.y,df21$Sbirth_y.x)
+df21$Soccu <- ifelse((df21$c26b==1),
+df21$Soccu.y,df21$Soccu.x)
+df21$Sworkfor <- ifelse((df21$c26b==1),
+df21$Sworkfor.y,df21$Sworkfor.x)
+names(df21)
+dropname<- c(11:15,18:21,24:27,41,43,46:50,55:60)
+dropname
+select(df21,-c(dropname))->testdf
+names(testdf)
+sum(is.na(df2000$Soccu))
+sum(is.na(testdf$Soccu))
+
+write_sav(df21,"RII2001_new.sav")
+colnames(df21[11])
+
+
+
+
+
+full_join(df1999, df2000, df2001, all.=TRUE)->df1920
+df20
+
+
+table(df1920$period)
+df2001$period
+
+```
+
+```{r}
+authors <- data.frame(
+    surname = c("Tukey", "Venables", "Tierney", "Ripley", "McNeil"),
+    nationality = c("US", "Australia", "US", "UK", "Australia"),
+    retired = c("yes", rep("no", 4)))
+books <- data.frame(
+    name = c("Tukey", "Venables", "Tierney", "Ripley", "Ripley", "McNeil"),
+    title = c("Exploratory Data Analysis",
+              "Modern Applied Statistics ...",
+              "LISP-STAT",
+              "Spatial Statistics", "Stochastic Simulation",
+               "Interactive Data Analysis"),
+    other.author = c(NA, "Ripley", NA, NA, NA, NA))
+
+merge(authors, books, by.x="surname", by.y="name")
+merge(books, authors, by.x="name", by.y="surname")
+```
+
+
