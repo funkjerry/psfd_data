@@ -1,23 +1,22 @@
 ---
 ---
-
+###RII2001
 ```{r}
 library(dplyr)
 library(haven)
 library(plyr)
 library(tidyr)
+library(stringr)
 
-df1999 <- read_sav(file = "RI1999.sav")
 df2000 <- read_sav(file = "RI2000.sav")
 df2001 <- read_sav(file = "RII2001.sav")
 
 df2000 %>%
   filter(id %in% df2001$id)%>%
-  select(id, grad_y, grad, indust, occu, workfor, workers, workplace, fwork_indust, fwork_occu, fworkfor, fwage, marry, Sbirth_y, Sedu, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace)->df20
+  select(id, grad_y, grad, indust, occu, workfor, workers, workplace, workhrs, wage, fwork_indust, fwork_occu, fworkfor, fwage, marry, Sbirth_y, Sedu, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace, Sworkhrs, Swage)->df20
 merge(df2001,df20,by="id",all.x=TRUE)->df21
 names(df21)
 name<-c("id","grad_y","grad","fwork_indust","fwork_occu","fworkfor","fwage","Sworkers","Sworkplace")
-
 
 df21$indust<-ifelse(df21$c01b==1,
 df21$indust.y,df21$indust.x)
@@ -29,6 +28,10 @@ df21$workers<-ifelse(df21$c01b==1,
 df21$workers.y,df21$workers.x)
 df21$workplace<-ifelse(df21$c01b==1,
 df21$workplace.y,df21$workplace.x)
+df21$workhrs<-ifelse(df21$c01b==1,
+df21$workhrs.y,df21$workhrs.x)
+df21$wage<-ifelse(df21$c01b==1,
+df21$wage.y,df21$wage.x)
 df21$marry <- ifelse((df21$c21a==2), df21$marry.y, df21$marry.x)
 df21$Sbirth_y <- ifelse((df21$c21a==1), df21$Sbirth_y.y, df21$Sbirth_y.x)
 df21$Sedu <- ifelse((df21$c21a==1),
@@ -39,46 +42,591 @@ df21$Soccu <- ifelse((df21$c26b==1),
 df21$Soccu.y,df21$Soccu.x)
 df21$Sworkfor <- ifelse((df21$c26b==1),
 df21$Sworkfor.y,df21$Sworkfor.x)
+df21$Sworkhrs <- ifelse((df21$c26b==1),
+df21$Sworkhrs.y,df21$Sworkhrs.x)
+df21$Swage <- ifelse((df21$c26b==1),
+df21$Swage.y,df21$Swage.x)
 names(df21)
-dropname<- c(11:15,18:21,24:27,41,43,46:50,55:60)
+dropname<- c(11:21,24:29,41,43,46:52,57:62,65:66)
 dropname
 select(df21,-c(dropname))->testdf
 names(testdf)
-sum(is.na(df2000$Soccu))
-sum(is.na(testdf$Soccu))
 
-write_sav(df21,"RII2001_new.sav")
-colnames(df21[11])
-
-
+write_sav(testdf,"RII2001_new.sav")
 
 
 
 full_join(df1999, df2000, df2001, all.=TRUE)->df1920
-df20
+```
 
+###RIII2001
+```{r}
+df1999 <- read_sav(file = "RI1999.sav")
+df2001b <- read_sav(file = "RIII2001.sav")
 
-table(df1920$period)
-df2001$period
+df1999 %>%
+  filter(id %in% df2001b$id) %>%
+  select(id, male, birth_y, edu, grad_y, grad, indust, occu, workfor, workers, workplace, workhrs, wage, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, marry, Sbirth_y, Sedu, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace, Sworkhrs, Swage)->df19
+merge(df2001b,df19,by="id",all.x=TRUE)->df201
+names(df201)
+df201$indust<-ifelse(df201$a03b==1,
+df201$indust.y,df201$indust.x)
+df201$occu<-ifelse(df201$a03b==1,
+df201$occu.y,df201$occu.x)
+df201$workfor<-ifelse(df201$a03b==1,
+df201$workfor.y,df201$workfor.x)
+df201$workhrs<-ifelse(df201$a03b==1,
+df201$workhrs.y,df201$workhrs.x)
+df201$wage<-ifelse(df201$a03b==1,
+df201$wage.y,df201$wage.x)
+df201$marry <- ifelse((df201$a11a==2), df201$marry.y, df201$marry.x)
+df201$Sbirth_y <- ifelse((df201$a11a==1), df201$Sbirth_y.y, df201$Sbirth_y.x)
+df201$Sedu <- ifelse((df201$a11a==1),
+df201$Sedu.y, df201$Sedu.x)
+df201$Sindust<-ifelse(df201$a16b==1,
+df201$Sindust.y,df201$Sindust.x)
+df201$Soccu<-ifelse(df201$a16b==1,
+df201$Soccu.y,df201$Soccu.x)
+df201$Sworkfor<-ifelse(df201$a16b==1,
+df201$Sworkfor.y,df201$Sworkfor.x)
+df201$Sworkhrs<-ifelse(df201$a16b==1,
+df201$Sworkhrs.y,df201$Sworkhrs.x)
+df201$Swage<-ifelse(df201$a16b==1,
+df201$Swage.y,df201$Swage.x)
 
+names(df201)
+dropname<-c(8:16,19:24,32,39:41,44:45,51:56,59:60)
+select(df201,-c(dropname))->testdf
+
+write_sav(testdf,"RIII2001_new.sav")
+### go to SPSS to combine two files of 2001 and call it RR2001_new.sav.
 ```
 
 ```{r}
-authors <- data.frame(
-    surname = c("Tukey", "Venables", "Tierney", "Ripley", "McNeil"),
-    nationality = c("US", "Australia", "US", "UK", "Australia"),
-    retired = c("yes", rep("no", 4)))
-books <- data.frame(
-    name = c("Tukey", "Venables", "Tierney", "Ripley", "Ripley", "McNeil"),
-    title = c("Exploratory Data Analysis",
-              "Modern Applied Statistics ...",
-              "LISP-STAT",
-              "Spatial Statistics", "Stochastic Simulation",
-               "Interactive Data Analysis"),
-    other.author = c(NA, "Ripley", NA, NA, NA, NA))
+df2001 <- read_sav(file = "RR2001_new.sav")
+df2002 <- read_sav(file = "RR2002.sav")
 
-merge(authors, books, by.x="surname", by.y="name")
-merge(books, authors, by.x="name", by.y="surname")
+table(df2001$Sedu)
+table(df2002$scale)
+df2001 %>%
+  filter(id %in% df2002$id) %>%
+  select(id, male, birth_y, edu, grad_y, grad, indust, occu, workfor, workers, workplace, workhrs, wage, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, marry, Sbirth_y, Sedu, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace, Sworkhrs, Swage)->df21
+
+merge(df2002,df21,by="id",all.x=TRUE)->df22
+names(df22)
+df22$indust<-ifelse(df22$a03b04==1,
+df22$indust.y,df22$indust.x)
+df22$occu<-ifelse(df22$a03b04==1,
+df22$occu.y,df22$occu.x)
+df22$workfor<-ifelse(df22$a03b04==1,
+df22$workfor.y,df22$workfor.x)
+df22$workers<-ifelse(df22$a03b04==1,
+df22$workers.y,df22$workers.x)
+df22$workplace<-ifelse(df22$a03b04==1,
+df22$workplace.y,df22$workplace.x)
+df22$workhrs<-ifelse(df22$a03b04==1,
+df22$workhrs.y,df22$workhrs.x)
+df22$wage<-ifelse(df22$a03b04==1,
+df22$wage.y,df22$wage.x)
+df22$marry <- ifelse((df22$a14==2), df22$marry.y, df22$marry.x)
+df22$Sbirth_y <- ifelse((df22$a14==1), df22$Sbirth_y.y, df22$Sbirth_y.x)
+df22$Sedu <- ifelse((df22$a14==1),
+df22$Sedu.y, df22$Sedu.x)
+df22$Sindust <- ifelse((df22$a19b04==1),
+df22$Sindust.y,df22$Sbirth_y.x)
+df22$Soccu <- ifelse((df22$a19b04==1),
+df22$Soccu.y,df22$Soccu.x)
+df22$Sworkfor <- ifelse((df22$a19b04==1),
+df22$Sworkfor.y,df22$Sworkfor.x)
+df22$Sworkers<-ifelse(df22$a19b04==1,
+df22$Sworkers.y,df22$Sworkers.x)
+df22$Sworkplace<-ifelse(df22$a19b04==1,
+df22$Sworkplace.y,df22$Sworkplace.x)
+df22$Sworkhrs<-ifelse(df22$a19b04==1,
+df22$Sworkhrs.y,df22$Sworkhrs.x)
+df22$Swage<-ifelse(df22$a19b04==1,
+df22$Swage.y,df22$Swage.x)
+names(df22)
+
+dropname<-c(9:16,18:20,23:30,38,44:50,56:65)
+select(df22, -c(dropname)) -> testdf
+
+write_sav(testdf,"RR2002_new.sav")
 ```
+
+```{r}
+df2003 <- read_sav(file = "RR2003.sav")
+df2002 <- read_sav(file = "RR2002_new.sav")
+
+table(df2002$Sedu)
+sum(is.na(df2003$marry))
+sum(is.na(testdf$marry))
+table(df22$indust.x)
+table(testdf$indust)
+df2002 %>%
+  filter(id %in% df2003$id) %>%
+  select(id, scale, birth_y, edu, grad_y, grad, indust, occu, workfor, workers, workplace, workhrs, wage, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, housework, marry, Sbirth_y, Sedu, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace, Sworkhrs, Swage, Shousework)->df21
+
+merge(df2003,df21,by="id",all.x=TRUE)->df22
+names(df22)
+
+df22$indust<-ifelse(df22$indust.x==0,
+df22$indust.y,df22$indust.x)
+df22$occu<-ifelse(df22$occu.x==0,
+df22$occu.y,df22$occu.x)
+df22$workfor<-ifelse(df22$workfor.x==0,
+df22$workfor.y,df22$workfor.x)
+df22$workers<-ifelse(df22$workers.x==0,
+df22$workers.y,df22$workers.x)
+df22$workplace<-ifelse(df22$workplace.x==0,
+df22$workplace.y,df22$workplace.x)
+df22$workhrs<-ifelse(df22$workers.x==0,
+df22$workhrs.y,df22$workhrs.x)
+df22$wage<-ifelse(df22$workers.x==0,
+df22$wage.y,df22$wage.x)
+df22$marry <- ifelse(is.na(df22$marry.x), df22$marry.y, df22$marry.x)
+df22$Sbirth_y <- ifelse((df22$marry==3 | df22$marry==2), df22$Sbirth_y, 0)
+df22$Sedu <- ifelse((df22$marry==3 | df22$marry==2),
+df22$Sedu, 0)
+df22$Sindust <- ifelse((df22$Sindust.x==0),
+df22$Sindust.y,df22$Sindust.x)
+df22$Soccu <- ifelse((df22$Soccu.x==0),
+df22$Soccu.y,df22$Soccu.x)
+df22$Sworkfor <- ifelse((df22$Sworkfor.x==0),
+df22$Sworkfor.y,df22$Sworkfor.x)
+df22$Sworkers<-ifelse(df22$Sworkers.x==0,
+df22$Sworkers.y,df22$Sworkers.x)
+df22$Sworkplace<-ifelse(df22$Sworkplace.x==0,
+df22$Sworkplace.y,df22$Sworkplace.x)
+df22$Sworkhrs<-ifelse(df22$Sworkers.x==0,
+df22$Sworkhrs.y,df22$Sworkhrs.x)
+df22$Swage<-ifelse(df22$Sworkers.x==0,
+df22$Swage.y,df22$Swage.x)
+names(df22)
+dropname<-c(7:13,15,17:23,29:35,42,45:51)
+select(df22, -c(dropname))->testdf
+
+write_sav(testdf,"RR2003_new.sav")
+### go to SPSS to combine two files of 2003 and call it RR2003_new2.sav.
+```
+
+```{r}
+df2003 <- read_sav(file = "RR2003_new2.sav")
+df2004 <- read_sav(file = "RR2004.sav")
+
+sum(is.na(df2004$marry))
+table(df2004$marry)
+table(df2003$marry)
+sum(is.na(df2003$marry))
+table(df22$marry)
+df2003 %>%
+  filter(id %in% df2004$id) %>%
+  select(id, male, birth_y, edu, grad_y, grad, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, marry, Sbirth_y, Sedu)->df21
+
+merge(df2004,df21,by="id",all.x=TRUE)->df22
+names(df22)
+
+table(df22$Sbirth_y.x)
+table(df22$Sbirth_y)
+table(df22$Sedu.x)
+table(df22$Sedu)
+df22$marry <- ifelse(df22$marry.x==0, df22$marry.y, df22$marry.x)
+df22$Sbirth_y <- ifelse((df22$marry==3 & is.na(df22$Sbirth_y.x)), df22$Sbirth_y.y, df22$Sbirth_y.x)
+df22$Sedu <- ifelse((df22$marry==3 & df22$Sedu.x==0),
+df22$Sedu.y, df22$Sedu.x)
+names(df22)
+dropname <- c(19:21,50,61:63)
+select(df22, -c(dropname))->testdf
+names(testdf)
+write_sav(testdf, "RR2004_new.sav")
+```
+
+```{r}
+df2004 <- read_sav(file = "RR2004_new.sav")
+df2005 <- read_sav(file = "RR2005.sav")
+
+
+sum(is.na(df2004$marry))
+table(df2004$marry)
+sum(is.na(df2005$marry))
+table(df2005$marry)
+table(df2001$workhrs)
+
+df2004 %>%
+  filter(id %in% df2005$id) %>%
+  select(id, male, birth_y, edu, grad_y, grad, indust, occu, workfor, workers, workplace, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, Sbirth_y, Sedu, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace)->df21
+
+merge(df2005,df21,by="id",all.x=TRUE)->df22
+names(df22)
+
+table(df22$Sbirth_y.x)
+sum(is.na(df22$Sedu.x))
+table(df22$Sedu.x)
+table(df22$indust.x)
+table(df22$a11b04)
+table(df22$work)
+
+df22$indust<-ifelse(df22$a11b04==1,
+df22$indust.y,df22$indust.x)
+table(df22$indust)
+df22$occu<-ifelse(df22$a11b04==1,
+df22$occu.y,df22$occu.x)
+df22$workfor<-ifelse(df22$a11b04==1,
+df22$workfor.y,df22$workfor.x)
+df22$workers<-ifelse(df22$a11b04==1,
+df22$workers.y,df22$workers.x)
+df22$workplace<-ifelse(df22$a11b04==1,
+df22$workplace.y,df22$workplace.x)
+
+table(df22$Sbirth_y.x)
+table(df22$Sbirth_y)
+table(df22$Sedu.x)
+table(df22$Sedu)
+df22$Sbirth_y <- ifelse((df22$marry==3 & is.na(df22$Sbirth_y.x)), df22$Sbirth_y.y, df22$Sbirth_y.x)
+df22$Sedu <- ifelse((df22$marry==3 & df22$Sedu.x==0),
+df22$Sedu.y, df22$Sedu.x)
+
+table(df22$Sindust.x)
+table(df22$Swork)
+table(df22$Sindust)
+df22$Sindust <- ifelse((df22$a27b04==1),
+df22$Sindust.y,df22$Sindust.x)
+df22$Soccu <- ifelse((df22$a27b04==1),
+df22$Soccu.y,df22$Soccu.x)
+df22$Sworkfor <- ifelse((df22$a27b04==1),
+df22$Sworkfor.y,df22$Sworkfor.x)
+df22$Sworkers<-ifelse(df22$a27b04==1,
+df22$Sworkers.y,df22$Sworkers.x)
+df22$Sworkplace<-ifelse(df22$a27b04==1,
+df22$Sworkplace.y,df22$Sworkplace.x)
+
+names(df22)
+dropname<-c(9:14,21:22,25:30,64:68,74:80)
+select(df22, -c(dropname))->testdf
+names(testdf)
+write_sav(testdf,"RR2005_new.sav")
+```
+
+```{r}
+df2005 <- read_sav(file = "RR2005_new.sav")
+df2006 <- read_sav(file = "RR2006.sav")
+
+df2005 %>%
+  filter(id %in% df2006$id) %>%
+  select(id, edu, grad_y, grad, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage)->df21
+merge(df2006,df21,by="id",all.x=TRUE)->df22
+
+write_sav(df22,"RR2006_new.sav")
+```
+
+```{r}
+df2006 <- read_sav(file = "RR2006_new.sav")
+df2007 <- read_sav(file = "RR2007.sav")
+
+df2006 %>%
+  filter(id %in% df2007$id) %>%
+  select(id, edu, grad_y, grad, workfor, workers, indust, occu, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, Sworkfor, Sworkers, Sindust, Soccu)->df21
+
+merge(df2007,df21,by="id",all.x=TRUE)->df22
+
+df22$workfor <- ifelse((df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+  df22$workfor.y, df22$workfor.x)
+df22$workers <- ifelse((df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+  df22$workers.y, df22$workers.x)
+df22$indust <- ifelse((df22$a06z05==1 | df22$a06z06==1),
+  df22$indust.y, df22$indust.x)
+df22$occu <- ifelse((df22$a06z05==1 | df22$a06z06==1),
+  df22$occu.y, df22$occu.x)
+
+df22$Sworkfor <- ifelse((df22$a21b03==1 | df22$a21b03==1 | df22$a21b05==1 | df22$a21b06==1),
+  df22$Sworkfor.y, df22$Sworkfor.x)
+df22$Sworkers <- ifelse((df22$a21b03==1 | df22$a21b04==1 | df22$a21b05==1 | df22$a21b06==1),
+  df22$Sworkers.y, df22$Sworkers.x)
+df22$Sindust <- ifelse((df22$a21b05==1 | df22$a21b06==1),
+  df22$Sindust.y, df22$Sindust.x)
+df22$Soccu <- ifelse((df22$a21b05==1 | df22$a21b06==1),
+  df22$Soccu.y, df22$Soccu.x)
+
+dropname <- c(14:17,27:30,63:70,80:83,89:92)
+select(df22,-c(dropname))->testdf
+
+write_sav(testdf,"RR2007_new.sav")
+```
+
+```{r}
+df2007 <- read_sav(file = "RR2007_new.sav")
+df2008 <- read_sav(file = "RR2008.sav")
+
+
+df2007 %>%
+  filter(id %in% df2008$id) %>%
+  select(id, edu, grad_y, grad, workfor, workers, indust, occu, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, Sworkfor, Sworkers, Sindust, Soccu)->df21
+
+merge(df2008,df21,by="id",all.x=TRUE)->df22
+
+df22$workfor <- ifelse((df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+  df22$workfor.y, df22$workfor.x)
+df22$workers <- ifelse((df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+  df22$workers.y, df22$workers.x)
+df22$indust <- ifelse((df22$a06z05==1 | df22$a06z06==1),
+  df22$indust.y, df22$indust.x)
+df22$occu <- ifelse((df22$a06z05==1 | df22$a06z06==1),
+  df22$occu.y, df22$occu.x)
+
+df22$Sworkfor <- ifelse((df22$a21b03==1 | df22$a21b03==1 | df22$a21b05==1 | df22$a21b06==1),
+  df22$Sworkfor.y, df22$Sworkfor.x)
+df22$Sworkers <- ifelse((df22$a21b03==1 | df22$a21b04==1 | df22$a21b05==1 | df22$a21b06==1),
+  df22$Sworkers.y, df22$Sworkers.x)
+df22$Sindust <- ifelse((df22$a21b05==1 | df22$a21b06==1),
+  df22$Sindust.y, df22$Sindust.x)
+df22$Soccu <- ifelse((df22$a21b05==1 | df22$a21b06==1),
+  df22$Soccu.y, df22$Soccu.x)
+
+
+dropname<-c(14:17,30:33,64:71,81:84,90:93)
+select(df22, -c(dropname))->testdf
+write_sav(testdf,"RR2008_new.sav")
+
+```
+
+
+```{r}
+df2008 <- read_sav(file = "RR2008_new.sav")
+df2009 <- read_sav(file = "RR2009.sav")
+
+df2008 %>%
+  filter(id %in% df2009$id) %>%
+  select(id, grad_y, grad, workfor, workers, indust, occu, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, Sworkfor, Sworkers, Sindust, Soccu)->df21
+
+merge(df2009,df21,by="id",all.x=TRUE)->df22
+
+df22$workfor <- ifelse((df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+  df22$workfor.y, df22$workfor.x)
+df22$workers <- ifelse((df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+  df22$workers.y, df22$workers.x)
+df22$indust <- ifelse((df22$a06z05==1 | df22$a06z06==1),
+  df22$indust.y, df22$indust.x)
+df22$occu <- ifelse((df22$a06z05==1 | df22$a06z06==1),
+  df22$occu.y, df22$occu.x)
+
+df22$Sworkfor <- ifelse((df22$a21z03==1 | df22$a21z03==1 | df22$a21z05==1 | df22$a21z06==1),
+  df22$Sworkfor.y, df22$Sworkfor.x)
+df22$Sworkers <- ifelse((df22$a21z03==1 | df22$a21z04==1 | df22$a21z05==1 | df22$a21z06==1),
+  df22$Sworkers.y, df22$Sworkers.x)
+df22$Sindust <- ifelse((df22$a21z05==1 | df22$a21z06==1),
+  df22$Sindust.y, df22$Sindust.x)
+df22$Soccu <- ifelse((df22$a21z05==1 | df22$a21z06==1),
+  df22$Soccu.y, df22$Soccu.x)
+
+dropname<-c(15:18,30:31,33:34,76:83,92:95,101:104)
+select(df22, -c(dropname))->testdf
+write_sav(testdf,"RR2009_new.sav")
+### go to SPSS to combine two files of 2009 and call it RR2009_new2.sav.
+```
+
+```{r}
+df2009 <- read_sav(file = "RR2009_new2.sav")
+df2010 <- read_sav(file = "RR2010.sav")
+
+df2009 %>%
+  filter(id %in% df2010$id) %>%
+  select(id, grad_y, grad, workfor, workers, indust, occu, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, Sworkfor, Sworkers, Sindust, Soccu)->df21
+
+merge(df2010,df21,by="id",all.x=TRUE)->df22
+df22$workfor <- ifelse(
+  (df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+    df22$workfor.y, df22$workfor.x)
+df22$workers <- ifelse(
+  (df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+    df22$workers.y, df22$workers.x)
+df22$indust <- ifelse(
+  (df22$a06z05==1 | df22$a06z06==1),
+    df22$indust.y, df22$indust.x)
+df22$occu <- ifelse(
+  (df22$a06z05==1 | df22$a06z06==1),
+    df22$occu.y, df22$occu.x)
+
+df22$Sworkfor <- ifelse(
+  (df22$a21z03==1 | df22$a21z03==1 | df22$a21z05==1 | df22$a21z06==1),
+    df22$Sworkfor.y, df22$Sworkfor.x)
+df22$Sworkers <- ifelse(
+  (df22$a21z03==1 | df22$a21z04==1 | df22$a21z05==1 | df22$a21z06==1),
+    df22$Sworkers.y, df22$Sworkers.x)
+df22$Sindust <- ifelse(
+  (df22$a21z05==1 | df22$a21z06==1),
+    df22$Sindust.y, df22$Sindust.x)
+df22$Soccu <- ifelse(
+  (df22$a21z05==1 | df22$a21z06==1),
+    df22$Soccu.y, df22$Soccu.x)
+
+names(df22)
+dropname<-c(15:18,31:34,64:71,80:83,89:92)
+select(df22, -c(dropname))->testdf
+write_sav(testdf,"RR2010_new.sav")
+```
+
+```{r}
+df2010 <- read_sav(file = "RR2010_new.sav")
+df2011 <- read_sav(file = "RR2011.sav")
+
+df2010 %>%
+  filter(id %in% df2011$id) %>%
+  select(id, grad_y, grad, workfor, workers, indust, occu, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, myear, Sbirth_y, Sworkfor, Sworkers, Sindust, Soccu)->df21
+
+merge(df2011,df21,by="id",all.x=TRUE)->df22
+df22$workfor <- ifelse(
+  (df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+    df22$workfor.y, df22$workfor.x)
+df22$workers <- ifelse(
+  (df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+    df22$workers.y, df22$workers.x)
+df22$indust <- ifelse(
+  (df22$a06z05==1 | df22$a06z06==1),
+    df22$indust.y, df22$indust.x)
+df22$occu <- ifelse(
+  (df22$a06z05==1 | df22$a06z06==1),
+    df22$occu.y, df22$occu.x)
+
+table(df2011$myear)
+table(df22$myear)
+table(df2010$myear)
+table(df2011$Sbirth_y)
+table(df22$Sbirth_y)
+table(df2010$Sbirth_y)
+df22$myear <- ifelse(
+  (df22$a16a==1 | df22$a16a==2),
+    df22$myear.y, df22$myear.x)
+df22$Sbirth_y <- ifelse(
+  (df22$a16a==1 | df22$a16a==2),
+    df22$Sbirth_y.y, df22$Sbirth_y.x)
+
+
+df22$Sworkfor <- ifelse(
+  (df22$a21z03==1 | df22$a21z03==1 | df22$a21z05==1 | df22$a21z06==1),
+    df22$Sworkfor.y, df22$Sworkfor.x)
+df22$Sworkers <- ifelse(
+  (df22$a21z03==1 | df22$a21z04==1 | df22$a21z05==1 | df22$a21z06==1),
+    df22$Sworkers.y, df22$Sworkers.x)
+df22$Sindust <- ifelse(
+  (df22$a21z05==1 | df22$a21z06==1),
+    df22$Sindust.y, df22$Sindust.x)
+df22$Soccu <- ifelse(
+  (df22$a21z05==1 | df22$a21z06==1),
+    df22$Soccu.y, df22$Soccu.x)
+
+names(df22)
+dropname<-c(15:18,26:27,31:34,64:72,81:84,90:95)
+select(df22,-c(dropname))->testdf
+
+write_sav(testdf,"RR2011_new.sav")
+```
+
+```{r}
+df2011 <- read_sav(file = "RR2011_new.sav")
+df2012 <- read_sav(file = "RR2012.sav")
+
+df2011 %>%
+  filter(id %in% df2011$id) %>%
+  select(id, grad_y, grad, workfor, workers, indust, occu, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, myear, Sbirth_y, Sworkfor, Sworkers, Sindust, Soccu)->df21
+
+merge(df2012,df21,by="id",all.x=TRUE)->df22
+df22$workfor <- ifelse(
+  (df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+    df22$workfor.y, df22$workfor.x)
+df22$workers <- ifelse(
+  (df22$a06z03==1 | df22$a06z04==1 | df22$a06z05==1 | df22$a06z06==1),
+    df22$workers.y, df22$workers.x)
+df22$indust <- ifelse(
+  (df22$a06z05==1 | df22$a06z06==1),
+    df22$indust.y, df22$indust.x)
+df22$occu <- ifelse(
+  (df22$a06z05==1 | df22$a06z06==1),
+    df22$occu.y, df22$occu.x)
+
+table(df2012$myear)
+table(df22$myear)
+table(df2011$myear)
+table(df2012$Sbirth_y)
+table(df22$Sbirth_y)
+table(df2011$Sbirth_y)
+df22$myear <- ifelse(
+  (df22$a16a==1 | df22$a16a==2),
+    df22$myear.y, df22$myear.x)
+df22$Sbirth_y <- ifelse(
+  (df22$a16a==1 | df22$a16a==2),
+    df22$Sbirth_y.y, df22$Sbirth_y.x)
+
+table(df2012$Sworkfor)
+table(df22$Sworkfor)
+df22$Sworkfor <- ifelse(
+  (df22$a21z03==1 | df22$a21z03==1 | df22$a21z05==1 | df22$a21z06==1),
+    df22$Sworkfor.y, df22$Sworkfor.x)
+df22$Sworkers <- ifelse(
+  (df22$a21z03==1 | df22$a21z04==1 | df22$a21z05==1 | df22$a21z06==1),
+    df22$Sworkers.y, df22$Sworkers.x)
+df22$Sindust <- ifelse(
+  (df22$a21z05==1 | df22$a21z06==1),
+    df22$Sindust.y, df22$Sindust.x)
+df22$Soccu <- ifelse(
+  (df22$a21z05==1 | df22$a21z06==1),
+    df22$Soccu.y, df22$Soccu.x)
+
+names(df22)
+dropname<-c(14:17,25:26,30:33,63:71,81:84,90:95)
+select(df22,-c(dropname))->testdf
+write_sav(testdf,"RR2012_new.sav")
+```
+
+```{r}
+df2012 <- read_sav(file = "RR2012_new.sav")
+df2014 <- read_sav(file = "RR2014.sav")
+
+df2012 %>%
+  filter(id %in% df2014$id) %>%
+  select(id, grad_y, grad, fwork_y, fwork_indust, fwork_occu, fworkfor, fwage, myear, Sbirth_y)->df21
+
+merge(df2014,df21,by="id",all.x=TRUE)->df22
+
+table(df2012$marry)
+table(df2014$marry)
+table(df2014$myear)
+table(df2014$Sbirth_y)
+
+df22$myear <- ifelse(
+  (df22$a16a==1 | df22$a16a==2),
+    df22$myear.y, df22$myear.x)
+df22$Sbirth_y <- ifelse(
+  (df22$a16a==1 | df22$a16a==2),
+    df22$Sbirth_y.y, df22$Sbirth_y.x)
+
+names(df22)
+dropname<-c(87:88,73,26:27)
+select(df22, -c(dropname))->testdf
+write_sav(testdf,"RR2014_new.sav")
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

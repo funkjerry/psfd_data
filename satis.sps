@@ -290,10 +290,6 @@ save OUTFILE= 'D:\satis\RII2000.sav'
  /COMPRESSED.
 
 *RII2001 (1730).
-GET file='C:\Users\steve\Documents\GitHub\psfd_data\RI1999.sav'.
-DATASET NAME RI1999.
-GET file='C:\Users\steve\Documents\GitHub\psfd_data\RI2000.sav'.
-DATASET NAME RI2000.
 
 GET 
   FILE='C:\Users\steve\Documents\GitHub\psfd_data\RII2001_c_V200707(spss).sav'
@@ -326,16 +322,16 @@ save outfile= 'C:\Users\steve\Documents\GitHub\psfd_data\RII2001.sav'
 
 *RIII2001 (726).
 GET 
-  FILE='D:\satis\RIII2001_c_V200707(spss).sav'
-   /keep x01 x01a x01b x05 a01 a02 a03a a05a01 a05a02 a05b a08 a07b a11a 
-a11b a12 a14a a15 a16a a18a01 a18a02 a18b a21 a20 d01 
-b12ac1 b12ac2 b12ac3 b12ac4.
+  FILE='C:\Users\user\Documents\GitHub\psfd_data\RIII2001_c_V200707(spss).sav'
+   /keep x01 x01a x01b x05 a01 a02 a03a a03b a05a01 a05a02 a05b a08 a07b a11a 
+a11b a12 a14a a15 a16a a16b a18a01 a18a02 a18b a21 a20 d01 
+b12ac1 b12ac2 b12ac3 b12ac4 c01a c01b.
 Dataset name RIII2001.
 RENAME VARIABLES
 x01=id x01a=category x01b=scale x05=district a01=life4 a02=health a03a=work a05a01=indust a05a02=occu 
 a05b=workfor a08=workhrs a07b=wage a12=Sbirth_y a14a=Sedu a15=Shealth a16a=Swork a18a01=Sindust 
 a18a02=Soccu a18b=Sworkfor a21=Sworkhrs a20=Swage d01=children b12ac1=C1rank b12ac2=C2rank
-b12ac3=C3rank b12ac4=C4rank.
+b12ac3=C3rank b12ac4=C4rank c01a=housework c01b=Shousework.
 recode Sbirth_y (0,96,97,98,99=SYSMIS).
 recode work Swork(1,2,3 =1)(4,5,6=2)(else=SYSMIS).
 if (a11a=1) marry =3.
@@ -347,29 +343,42 @@ recode indust Sindust(1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5
 (64=9)(73,94=10)(81,82,86=11)(83=12)(84=13)(85,92=14)(90,91,99=15)(93=16)(95,96=17)(97=18)(98,100=19).
 compute period = 2001.
 EXECUTE.
-delete variables a11a a11b.
-save outfile= 'D:\satis\RIII2001.sav'
+delete variables a11b.
+save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RIII2001.sav'
  /COMPRESSED.
 
 *RR2002 (2424).
 GET FILE="D:\satis\riii&riv2002_c_v200907(spss).sav"
-   /keep x01 x01a x01b x02 x05 a01 a02 a03a a05a01 a05a02 a05b a05c 
-a06a02 a09 a08b d04a01 a14 a15 a17a a18 a19a a21a01 a21a02 a21b a21c a22a02 
-a25 a24 e01 c13ac1 c13ac2 c13ac3 c13ac4.
+   /keep x01 x01a x01b x02 x05 a01 a02 a03a a03b04 a05a01 a05a02 a05b a05c 
+a06a02 a09 a08b d04a01 a14 a15 a17a a18 a19a a19b04 a21a01 a21a02 a21b a21c a22a02 
+a25 a24 e01 c13ac1 c13ac2 c13ac3 c13ac4 d01a d01b.
 DATASET NAME RR2002.
 RENAME VARIABLES 
 x01=id x01a=category x01b=scale x02=period x05=district a01=life4 a02=health a03a=work a05a01=indust 
 a05a02=occu a05b=workfor a05c=workers a06a02=workplace a09=workhrs a08b=wage d04a01=pension 
 a14=marry a15=Sbirth_y a17a=Sedu a18=Shealth a19a=Swork a21a01=Sindust a21a02=Soccu 
 a21b=Sworkfor a21c=Sworkers a22a02=Sworkplace a25=Sworkhrs a24=Swage e01=children 
-c13ac1=C1rank c13ac2=C2rank c13ac3=C3rank c13ac4=C4rank.
+c13ac1=C1rank c13ac2=C2rank c13ac3=C3rank c13ac4=C4rank d01a=housework d01b=Shousework.
+compute a14=marry.
+recode marry (1=3)(2=1).
 recode Sbirth_y (0,96,97,98,99=SYSMIS).
 recode work Swork(1,2,3 =1)(4,5,6=2)(else=SYSMIS).
 recode indust Sindust(1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5)(51 thru 59=6)(61 thru 63=7)(71,72=8)
 (64=9)(73,94=10)(81,82,86=11)(83=12)(84=13)(85,92=14)(90,91,99=15)(93=16)(95,96=17)(97=18)(98,100=19).
 EXECUTE.
-save outfile= 'D:\satis\RR2002.sav'
+save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2002.sav'
  /COMPRESSED.
+
+GET file="C:\Users\user\Documents\GitHub\psfd_data\RII2001_new.sav".
+dataset name RII2001.
+GET file="C:\Users\user\Documents\GitHub\psfd_data\RIII2001_new.sav".
+dataset name RIII2001.
+ADD FILES FILE = RII2001
+   /FILE = RIII2001.
+dataset name RR2001.
+dataset activate RR2001.
+save outfile="C:\Users\user\Documents\GitHub\psfd_data\RR2001_new.sav".
+EXECUTE.
 
 *RR2003 (2317).
 GET FILE="D:\satis\rivrv2003_c_v201401_spss.sav"
@@ -379,14 +388,40 @@ RENAME VARIABLES
 x01=id x05=district a01=male a03=health.
 compute period=2003.
 EXECUTE.
-save outfile= 'D:\satis\RR2003.sav'
+
+GET FILE="D:\satis\riirvrvi2004_c_v201401_spss.sav"
+   /keep x01 a12 a16b01 a16b02 a16c a16d a17a02 a20 a19b d03b02 a24a a36 a40b01 a40b02 a40c a40d a41a02 a44 a43b.
+RENAME VARIABLES x01=id a12=work a16b01=indust a16b02=occu a16c=workfor a16d=workers a17a02=workplace
+a20=workhrs a19b=wage d03b02=ann_wage a24a=marry a36=Swork a40b01=Sindust a40b02=Soccu a40c=Sworkfor
+a40d=Sworkers a41a02=Sworkplace a44=Sworkhrs a43b=Swage.
+recode indust Sindust (1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5)(51 thru 59=6)(61 thru 63=7)(71,72=8)
+(64=9)(73,94=10)(81,82,86=11)(83=12)(84=13)(85,92=14)(90,91,99=15)(93=16)(95,96=17)(97=18)(98,100=19).
+recode marry (1=3)(2=1).
+EXECUTE.
+DATASET NAME RR2003b.
+*透過id和Y1新增a17d、a17e變項.
+DATASET ACTIVATE RR2003.
+SORT CASES BY id.
+DATASET ACTIVATE RR2003b.
+SORT CASES BY id.
+DATASET ACTIVATE RR2003.
+MATCH FILES /FILE=*
+  /FILE=RR2003b
+  /BY id.
+EXECUTE.
+dataset name RR2003all.
+dataset activate RR2003all.
+select if period=2003.
+EXECUTE.
+
+save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2003.sav'
  /COMPRESSED.
 
 *RR2004 (3024).
 GET FILE="D:\satis\riirvrvi2004_c_v201401_spss.sav"
    /keep x01 x01a x01b x02 x06 a01 a02 a03 a05a01 a05a02 a05b a05c a06a02 a09 
-a08b d04a01 a24b a25 a27a a28 a29 a31a01 a31a02 a31b a31c a32a02 
-a35 a34b c13ef1 c13em1 c13ef2 c13em2 e01 c13bc1 c13c01c1 c13ac1 c13bc2 c13c01c2 c13ac2 
+a08b d03a02 d04a01 d01a a24b a25 a27a a28 a29 a31a01 a31a02 a31b a31c a32a02 
+a35 a34b d03b02 d01b c13ef1 c13em1 c13ef2 c13em2 e01 c13bc1 c13c01c1 c13ac1 c13bc2 c13c01c2 c13ac2 
 c13bc3 c13c01c3 c13ac3 c13bc4 c13c01c4 c13ac4. 
 DATASET NAME RR2004.
 RENAME VARIABLES 
@@ -397,24 +432,36 @@ a31b=Sworkfor a31c=Sworkers a32a02=Sworkplace a35=Sworkhrs a34b=Swage c13ef1=coh
 c13em1=cohabit_m c13ef2=cohabit_Sf c13em2=cohabit_Sm e01=children c13bc1=C1male 
 c13c01c1=C1birth_y c13ac1=C1rank c13bc2=C2male c13c01c2=C2birth_y c13ac2=C2rank 
 c13bc3=C3male c13c01c3=C3birth_y c13ac3=C3rank c13bc4=C4male c13c01c4=C4birth_y 
-c13ac4=C4rank.  
+c13ac4=C4rank d03a02=ann_wage d01a=housework d03b02=Sann_wage d01b=Shousework.  
+compute a24b=marry.
 recode cohabit_f(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_m(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_Sf(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_Sm(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
-recode indust Sindust(1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5)(51 thru 59=6)(61 thru 63=7)(71,72=8)
+recode indust Sindust (1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5)(51 thru 59=6)(61 thru 63=7)(71,72=8)
 (64=9)(73,94=10)(81,82,86=11)(83=12)(84=13)(85,92=14)(90,91,99=15)(93=16)(95,96=17)(97=18)(98,100=19).
 recode marry (1=3)(2=1).
 recode period(SYSMIS=2004).
 recode Sbirth_y(0=SYSMIS).
 EXECUTE.
-save outfile= 'D:\satis\RR2004.sav'
+save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2004.sav'
  /COMPRESSED.
+
+get file ="C:\Users\user\Documents\GitHub\psfd_data\RR2003_new.sav".
+dataset name RR2003a.
+get file="C:\Users\user\Documents\GitHub\psfd_data\RI2003.sav".
+dataset name RR2003b.
+dataset activate RR2003b.
+Add files file=RR2003b
+   /file=RR2003a.
+EXECUTE.
+dataset name RR2003all.
+save outfile ="C:\Users\user\Documents\GitHub\psfd_data\RR2003_new2.sav".
 
 *RR2005 (2880).
 GET file="D:\satis\RR2005_c_V200701(SPSS).sav"
-   /keep x01 x01a x01b x02 x06 a01 a02a a11a a13a01 a13a02 a13b a13c a14a02 a17 a16b c04a01 
-a22 a23 a25a a26 a27a a29a01 a29a02 a29b a29c a30a02 a33 a32b b13ef1 b13em1 b13ef2 b13em2 
+   /keep x01 x01a x01b x02 x06 a01 a02a a11a a11b04 a13a01 a13a02 a13b a13c a14a02 a17 a16b c03a02 c04a01 
+c01a a22 a23 a25a a26 a27a a27b04 a29a01 a29a02 a29b a29c a30a02 a33 a32b c03b02 c01b b13ef1 b13em1 b13ef2 b13em2 
 f01a f01b f01c f01d f01e f01f f01g b12e b13bc1 b13c01c1 b13ac1 b13bc2 b13c01c2 b13ac2 
 b13bc3 b13c01c3 b13ac3 b13bc4 b13c01c4 b13ac4. 
 DATASET NAME RR2005.
@@ -426,7 +473,7 @@ b13ef1=cohabit_f b13em1=cohabit_m b13ef2=cohabit_Sf b13em2=cohabit_Sm f01a=love_
 f01b=love_mom f01c=love_bro f01d=love_sis f01e=love_S f01f=love_son f01g=love_dau b12e=children 
 b13bc1=C1male b13c01c1=C1birth_y b13ac1=C1rank b13bc2=C2male b13c01c2=C2birth_y 
 b13ac2=C2rank b13bc3=C3male b13c01c3=C3birth_y b13ac3=C3rank b13bc4=C4male 
-b13c01c4=C4birth_y b13ac4=C4rank. 
+b13c01c4=C4birth_y b13ac4=C4rank c01a=housework c01b=Shousework c03a02=ann_wage c03b02=Sann_wage. 
 recode cohabit_f(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_m(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_Sf(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
@@ -440,13 +487,14 @@ recode Sbirth_y(0=SYSMIS).
 recode workers Sworkers(7=6)(8=7).
 SELECT IF category=1.
 EXECUTE.
-save outfile= 'D:\satis\RR2005.sav'
+save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2005.sav'
  /COMPRESSED.
+
 *RR2006 (2772).
 GET FILE="D:\satis\RR2006_c_V200801_SPSS.sav"
    /keep z01 z01a z01b z02 z04b a01 a02 a03 a04a a07 a11a01 a11a02 
-a11b a11c a12a02 a14 a13b a22 a23 a25a a26 a27a a29a01 a29a02 a29b a29c a30a02 
-a32 a31b b13hf1 b13hm1 b13hf2 b13hm2 d01c d01b d01a b12e b13bc1 b13c01c1 b13ac1 
+a11b a11c a12a02 a14 a13b  c03a02 c04a01 c01a a22 a23 a25a a26 a27a a29a01 a29a02 a29b a29c a30a02 
+a32 a31b c03b02 c01b b13hf1 b13hm1 b13hf2 b13hm2 d01c d01b d01a b12e b13bc1 b13c01c1 b13ac1 
 b13bc2 b13c01c2 b13ac2 b13bc3 b13c01c3 b13ac3 b13bc4 b13c01c4 b13ac4 c04a01.
 DATASET NAME RR2006.
 RENAME VARIABLES
@@ -457,8 +505,9 @@ a29b=Sworkfor a29c=Sworkers a30a02=Sworkplace a32=Sworkhrs a31b=Swage b13hf1=coh
 b13hm1=cohabit_m b13hf2=cohabit_Sf b13hm2=cohabit_Sm d01c=love_S d01b=love_son d01a=love_dau 
 b12e=children b13bc1=C1male b13c01c1=C1birth_y b13ac1=C1rank b13bc2=C2male b13c01c2=C2birth_y 
 b13ac2=C2rank b13bc3=C3male b13c01c3=C3birth_y b13ac3=C3rank b13bc4=C4male 
-b13c01c4=C4birth_y b13ac4=C4rank c04a01=pension. 
-recode Sbirth_y(0,96,98=SYSMIS).
+b13c01c4=C4birth_y b13ac4=C4rank c04a01=pension c03a02=ann_wage c04a01=pension c01a=housework
+c03b02=Sann_wage c01b=Shousework. 
+recode Sbirth_y(96,98=SYSMIS).
 recode cohabit_f(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_m(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_Sf(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
@@ -469,7 +518,7 @@ recode pension(2,3=2)(else=SYSMIS).
 recode workers Sworkers(7=6)(8=7).
 SELECT IF category=1.
 EXECUTE.
-save outfile= 'D:\satis\RR2006.sav'
+save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2006.sav'
  /COMPRESSED.
 
 *RR2007.
@@ -478,7 +527,7 @@ GET
 /keep x01 x01a x01b x02 x05 a01 a02a a03a a03b a04a d07d d07e a05 a09a01 a09a02 a08b a08c a09b02 a11a a10b a11b01 a11b02 d04a01 a16 a17 
 a19 a20 a21a a24a01 a24a02 a23b a23c a24b02 a26a a25b a26b01 a26b02 b14gf1 b14gm1 b14gf2 b14gm2 b12 b13bc1 b13c01c1 b13ac1 b13dc1 
 b13bc2 b13c01c2 b13ac2 b13dc2 b13bc3 b13c01c3 b13ac3 b13dc3 b13bc4 b13c01c4 b13ac4 b13dc4 b13bc5 b13c01c5 b13ac5 b13dc5 
-b13bc6 b13c01c6 b13ac6 b13dc6.
+b13bc6 b13c01c6 b13ac6 b13dc6 d03a02 d03b02 d01a d01b a06z03 a06z04 a06z05 a06z06 a21b03 a21b04 a21b05 a21b06.
 dataset name RR2007.
 rename variables x01=id x01a=category x01b=scale x02=period x05=district a01=male a02a=birth_y 
 a03a=happy a03b=life a04a=health d07d=work_satis d07e=family_satis a05=work 
@@ -492,7 +541,7 @@ b13bc3=C3male b13c01c3=C3birth_y b13ac3=C3rank b13dc3=C3edu
 b13bc4=C4male b13c01c4=C4birth_y b13ac4=C4rank b13dc4=C4edu 
 b13bc5=C5male b13c01c5=C5birth_y b13ac5=C5rank b13dc5=C5edu 
 b13bc6=C6male b13c01c6=C6birth_y b13ac6=C6rank b13dc6=C6edu
-d04a01=pension.
+d04a01=pension d03a02=ann_wage d03b02=Sann_wage d01a=housework d01b=Shousework.
 recode Sbirth_y (96 thru 99=SYSMIS).
 recode marry(3,4,5=3)(6=4)(7=5)(8=6).
 recode a11b01 a11b02(96=SYSMIS).
@@ -511,17 +560,18 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b14gf1 b14gm1 b14gf2 b14gm2.
 select if (category=1).
 EXECUTE.
-save OUTFILE="D:\satis\RR2007.sav"
+save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2007.sav"
 /COMPRESSED.
+
 *RR2008.
 GET
   FILE='D:\satis\RR2008_c_v201207_spss.sav'
 /keep x01 x01a x01b x02 x05 a01 a02a a03a a03b a04a c07a c07b a05 a09a01 a09a02
-a08b a08c a09b02 a11a a10b a11b01 a11b02 c04a01 a16z01 a16z02 a17 a19 a20 a21a 
-a24a01 a24a02 a23b a23c a24b02 a26a a25b a26b01 a26b02 b16b b17b 
-b20b b21b b13bc1 b13c01c1 b13ac1 b13dc1 b13bc2 b13c01c2 b13ac2 b13dc2 
+a08b a08c a09b02 a11a a10b c03a02 a11b01 a11b02 c04a01 c01a a16z01 a16z02 a17 a19 a20 a21a 
+a24a01 a24a02 a23b a23c a24b02 a26a a25b c03b02 c01b a26b01 a26b02 b16b b17b 
+b20b b21b b12 b13bc1 b13c01c1 b13ac1 b13dc1 b13bc2 b13c01c2 b13ac2 b13dc2 
 b13bc3 b13c01c3 b13ac3 b13dc3 b13bc4 b13c01c4 b13ac4 b13dc4 b13bc5 
-b13c01c5 b13ac5 b13dc5 b13bc6 b13c01c6 b13ac6 b13dc6.
+b13c01c5 b13ac5 b13dc5 b13bc6 b13c01c6 b13ac6 b13dc6 a06z03 a06z04 a06z05 a06z06 a21b03 a21b04 a21b05 a21b06.
 dataset name RR2008.
 rename variables x01=id x01a=category x01b=scale x02=period x05=district a01=male a02a=birth_y 
 a03a=happy a03b=life a04a=health c07a=work_satis c07b=family_satis a05=work
@@ -535,7 +585,7 @@ b13c01c3=C3birth_y b13ac3=C3rank b13dc3=C3edu b13bc4=C4male
 b13c01c4=C4birth_y b13ac4=C4rank b13dc4=C4edu b13bc5=C5male 
 b13c01c5=C5birth_y b13ac5=C5rank b13dc5=C5edu b13bc6=C6male 
 b13c01c6=C6birth_y b13ac6=C6rank b13dc6=C6edu
-c04a01=pension. 
+c04a01=pension c03a02=ann_wage c03b02=Sann_wage c01a=housework c01b=Shousework b12=children. 
 recode Sbirth_y (96 thru 99=SYSMIS).
 recode work(1,2=1)(3=2)(0=0)(else=sysmis).
 recode Swork(1,2=1)(3=2)(0=0)(else=SYSMIS).
@@ -556,18 +606,19 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16b b17b b20b b21b.
 select if (category=1).
 EXECUTE.
-save OUTFILE="D:\satis\RR2008.sav"
+save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2008.sav"
 /COMPRESSED.
+
 *RR2009.
 GET
   FILE='D:\satis\RR2009_c_V201212_spss.sav'
 /keep x01 x01a x01b x02 x05 a01 a02a a03a a03b a04a c07a c07b a03c a05 a09a01 a09a02 
-a08b a08c a09f02 a11a a10a a11b01 a11b02 c04a01 a16z01 a16z02 a17z01 a18 a19 a20 
-a24a01 a24a02 c04a01 a23b a23c a24b02 a26a a25a a26b01 a26b02 b16c b17c b20c b21c 
+a08b a08c a09f02 a11a a10a c03a02 a11b01 a11b02 c04a01 a16z01 a16z02 a17z01 a18 a19 a20 
+a24a01 a24a02 c04a01 c01a a23b a23c a24b02 a26a a25a c03b02 c01b a26b01 a26b02 b16c b17c b20c b21c 
 b22z01 b22z02 b22z03 b22z04 b22z05 b13bc1 b13c01c1 b13ac1 b13dc1 b13bc2 
 b13c01c2 b13ac2 b13dc2 b13bc3 b13c01c3 b13ac3 b13dc3 b13bc4 b13c01c4 b13ac4 
 b13dc4 b13bc5 b13c01c5 b13ac5 b13dc5 b13bc6 b13c01c6 b13ac6 b13dc6 d01a d01b 
-d01c d01d d01e d01f d01g. 
+d01c d01d d01e d01f d01g a06z03 a06z04 a06z05 a06z06 a21z03 a21z04 a21z05 a21z06. 
 dataset name RR2009.
 rename variables x01=id x01a=category x01b=scale x02=period x05=district a01=male a02a=birth_y 
 a03a=happy a03b=life a04a=health c07a=work_satis c07b=family_satis a03c=edu 
@@ -583,8 +634,8 @@ b13dc3=C3edu b13bc4=C4male b13c01c4=C4birth_y b13ac4=C4rank
 b13dc4=C4edu b13bc5=C5male b13c01c5=C5birth_y b13ac5=C5rank 
 b13dc5=C5edu b13bc6=C6male b13c01c6=C6birth_y b13ac6=C6rank 
 b13dc6=C6edu d01a=love_fa d01b=love_mom d01c=love_bro d01d=love_sis 
-d01e=love_S d01f=love_son d01g=love_dau
-c04a01=pension. 
+d01e=love_S d01f=love_son d01g=love_dau c03a02=ann_wage c03b02=Sann_wage
+c01a=housework c01b=Shousework c04a01=pension. 
 recode Sbirth_y (96 thru 99=SYSMIS).
 recode work(1,2=1)(3=2)(0=0)(else=sysmis).
 recode Swork(1,2=1)(3=2)(0=0)(else=SYSMIS).
@@ -606,17 +657,18 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="D:\satis\RR2009.sav"
+save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2009.sav"
 /COMPRESSED.
 *RR2010.
 GET
   FILE='D:\satis\RR2010_c_v201308_spss.sav'
 /keep x01 x01a x01b x02 x05 a01 a02a a03a a03b a04a c07a c07b a03c a05 a09a01 a09a02 
-a08b a08c a09b02 a11a a10a a11b01 a11b02 c04a01 a16z01 a16z02 a17z01 a18 a19 a20 
-a24a01 a24a02 a23b a23c a24b02 a26a a25a a26b01 a26b02 b16c b17c b20c b21c 
+a08b a08c a09b02 a11a a10a c03a02 c01a a11b01 a11b02 c04a01 a16z01 a16z02 a17z01 a18 a19 a20 
+a24a01 a24a02 a23b a23c a24b02 a26a a25a c03b02 c01b a26b01 a26b02 b16c b17c b20c b21c 
 b13bc1 b13c01c1 b13ac1 b13dc1 b13bc2 b13c01c2 b13ac2 b13dc2 b13bc3 
 b13c01c3 b13ac3 b13dc3 b13bc4 b13c01c4 b13ac4 b13dc4 b13bc5 b13c01c5 b13ac5 
-b13dc5 b13bc6 b13c01c6 b13ac6 b13dc6.
+b13dc5 b13bc6 b13c01c6 b13ac6 b13dc6
+a06z03 a06z04 a06z05 a06z06 a21z03 a21z04 a21z05 a21z06.
 dataset name RR2010.
 rename variables x01=id x01a=category x01b=scale x02=period x05=district a01=male a02a=birth_y 
 a03a=happy a03b=life a04a=health c07a=work_satis c07b=family_satis a03c=edu 
@@ -630,7 +682,7 @@ b13bc3=C3male b13c01c3=C3birth_y b13ac3=C3rank b13dc3=C3edu
 b13bc4=C4male b13c01c4=C4birth_y b13ac4=C4rank b13dc4=C4edu 
 b13bc5=C5male b13c01c5=C5birth_y b13ac5=C5rank b13dc5=C5edu 
 b13bc6=C6male b13c01c6=C6birth_y b13ac6=C6rank b13dc6=C6edu
-c04a01=pension.
+c04a01=pension c04a01=pension c03a02=ann_wage c03b02=Sann_wage c01a=housework c01b=Shousework.
 recode Sbirth_y (96 thru 99=SYSMIS).
 recode work(1,2=1)(3=2)(0=0)(else=sysmis).
 recode Swork(1,2=1)(3=2)(0=0)(else=SYSMIS).
@@ -652,17 +704,30 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="D:\satis\RR2010.sav"
+save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2010.sav"
 /COMPRESSED.
+
+get file ="C:\Users\user\Documents\GitHub\psfd_data\RR2009_new.sav".
+dataset name RR2009a.
+get file="C:\Users\user\Documents\GitHub\psfd_data\RI2009.sav".
+dataset name RR2009b.
+dataset activate RR2009b.
+Add files file=RR2009b
+   /file=RR2009a.
+EXECUTE.
+dataset name RR2009all.
+save outfile ="C:\Users\user\Documents\GitHub\psfd_data\RR2009_new2.sav".
+
 *RR2011.
 GET
   FILE='D:\satis\rr2011_c_v201309_spss.sav'
 /keep x01 x01a x01b x02 x05 a01 a02a a03a a03b a04a c07a c07b a03c a05 a09a01 a09a02 a08b 
-a08c a09b02 a11a a10a a11b01 a11b02 c04a01 a16a a16b01 a17z01 a18 a19 a20 a24a01 a24a02 
-a23b a23c a24b02 a26a a25a a26b01 a26b02 b16c b17c b20c b21c b13bc1 b13c01c1 
+a08c a09b02 a11a a10a c03a02 a11b01 a11b02 c04a01 c01a a16a a16b01 a17z01 a18 a19 a20 a24a01 a24a02 
+a23b a23c a24b02 a26a a25a c03b02 a26b01 a26b02 c01b b16c b17c b20c b21c b13bc1 b13c01c1 
 b13ac1 b13dc1 b13bc2 b13c01c2 b13ac2 b13dc2 b13bc3 b13c01c3 b13ac3 b13dc3 
 b13bc4 b13c01c4 b13ac4 b13dc4 b13bc5 b13c01c5 b13ac5 b13dc5 b13bc6 b13c01c6 
-b13ac6 b13dc6.
+b13ac6 b13dc6
+a06z03 a06z04 a06z05 a06z06 a21z03 a21z04 a21z05 a21z06.
 dataset name RR2011.
 rename variables x01=id x01a=category x01b=scale x02=period x05=district a01=male a02a=birth_y 
 a03a=happy a03b=life a04a=health c07a=work_satis c07b=family_satis a03c=edu 
@@ -675,7 +740,8 @@ b13dc2=C2edu b13bc3=C3male b13c01c3=C3birth_y b13ac3=C3rank b13dc3=C3edu
 b13bc4=C4male b13c01c4=C4birth_y b13ac4=C4rank b13dc4=C4edu b13bc5=C5male 
 b13c01c5=C5birth_y b13ac5=C5rank b13dc5=C5edu b13bc6=C6male 
 b13c01c6=C6birth_y b13ac6=C6rank b13dc6=C6edu
-c04a01=pension. 
+c04a01=pension c03a02=ann_wage c03b02=Sann_wage c01a=housework c01b=Shousework. 
+compute a16a=marry.
 recode Sbirth_y (999=SYSMIS).
 recode work(1,2=1)(3=2)(0=0)(else=sysmis).
 recode Swork(1,2=1)(3=2)(0=0)(else=SYSMIS).
@@ -697,16 +763,17 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="D:\satis\RR2011.sav"
+save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2011.sav"
 /COMPRESSED.
 *RR2012.
 GET
   FILE='D:\satis\rr2012_v201605_spss.sav'
 /keep x01 x01a x01b x05 a01 a02a01 a03a a03b a04a e01a e01b a03c a05 a09a01 a09a02 
-a08b a08c a09b02 a11a a10a a11b01 a11b02 d04a01 a16a a16b01 a17z01 a18 a19 a20 a24a01 
-a24a02 a23b a23c a24b02 a26a a25a a26b01 a26b02 b16c b17c b20c b21c b13bc1 b13c01c1 b13ac1 b13dc1 
+a08b a08c a09b02 a11a a10a d03a02 a11b01 a11b02 d04a01 d01a a16a a16b01 a17z01 a18 a19 a20 a24a01 
+a24a02 a23b a23c a24b02 a26a a25a d03b02 a26b01 a26b02 d01b b16c b17c b20c b21c b13bc1 b13c01c1 b13ac1 b13dc1 
 b13bc2 b13c01c2 b13ac2 b13dc2 b13bc3 b13c01c3 b13ac3 b13dc3 b13bc4 b13c01c4 
-b13ac4 b13dc4 b13bc5 b13c01c5 b13ac5 b13dc5 b13bc6 b13c01c6 b13ac6 b13dc6.
+b13ac4 b13dc4 b13bc5 b13c01c5 b13ac5 b13dc5 b13bc6 b13c01c6 b13ac6 b13dc6
+a06z03 a06z04 a06z05 a06z06 a21z03 a21z04 a21z05 a21z06.
 dataset name RR2012.
 rename variables x01=id x01a=category x01b=scale x05=district a01=male a02a01=birth_y 
 a03a=happy a03b=life a04a=health e01a=work_satis e01b=family_satis a03c=edu 
@@ -718,8 +785,9 @@ b13ac1=C1rank b13dc1=C1edu b13bc2=C2male b13c01c2=C2birth_y b13ac2=C2rank
 b13dc2=C2edu b13bc3=C3male b13c01c3=C3birth_y b13ac3=C3rank b13dc3=C3edu 
 b13bc4=C4male b13c01c4=C4birth_y b13ac4=C4rank b13dc4=C4edu b13bc5=C5male 
 b13c01c5=C5birth_y b13ac5=C5rank b13dc5=C5edu b13bc6=C6male 
-b13c01c6=C6birth_y b13ac6=C6rank b13dc6=C6edu
-d04a01=pension.
+b13c01c6=C6birth_y b13ac6=C6rank b13dc6=C6edu d03a02=ann_wage d03b02=Sann_wage
+d01a=housework d01b=Shousework d04a01=pension.
+compute a16a=marry.
 recode birth_y(96 thru 99=SYSMIS).
 recode Sbirth_y (96 thru 99=SYSMIS).
 compute period=2012.
@@ -743,14 +811,14 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="D:\satis\RR2012.sav"
+save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2012.sav"
 /COMPRESSED.
 *RR2014.
 GET
   FILE='D:\satis\RR2014_v201607_spss.sav'
 /keep x01 x01a x01b x02 x05 a01 a02a a03a a03b a04a c07a c07b a03c a05 a07a01 a07a02 a06 
-a07b a07c02 a09b a08a a10a01 c04a01 a16a a16b01 a26z01 a27 a28 a29 a31a01 a31a02 
-a30 a31b a31c02 a33b a32a a33c01 b20df1 b20dm1 b23ef2 b23em2 b13 b13a 
+a07b a07c02 a09b a08a c03a02 a10a01 c04a01 c01a a16a a16b01 a26z01 a27 a28 a29 a31a01 a31a02 
+a30 a31b a31c02 a33b a32a c03b02 a33c01 c01b b20df1 b20dm1 b23ef2 b23em2 b13 b13a 
 b13b b14bc1 b14c01c1 b14ac1 b14dc1 b14jc1 b14bc2 b14c01c2 b14ac2 b14dc2 b14jc2 
 b14bc3 b14c01c3 b14ac3 b14dc3 b14jc3 b14bc4 b14c01c4 b14ac4 b14dc4 b14jc4 b14bc5 
 b14c01c5 b14ac5 b14dc5 b14jc5 b14bc6 b14c01c6 b14ac6 b14dc6 b14jc6.
@@ -762,12 +830,13 @@ a09b=workhrs a08a=wage c04a01=pension a16a=marry a16b01=myear a26z01=Sbirth_y a2
 a28=Shealth a29=Swork a31a01=Sindust a31a02=Soccu a30=Sworkfor a31b=Sworkers 
 a31c02=Sworkplace a33b=Sworkhrs a32a=Swage b13=children b13a=sons 
 b13b=daughters b14bc1=C1male b14c01c1=C1birth_y b14ac1=C1rank b14dc1=C1edu 
-b14jc1=C1care b14bc2=C2male b14c01c2=C2birth_y b14ac2=C2rank b14dc2=C2edu 
-b14jc2=C2care b14bc3=C3male b14c01c3=C3birth_y b14ac3=C3rank b14dc3=C3edu 
-b14jc3=C3care b14bc4=C4male b14c01c4=C4birth_y b14ac4=C4rank b14dc4=C4edu 
-b14jc4=C4care b14bc5=C5male b14c01c5=C5birth_y b14ac5=C5rank b14dc5=C5edu 
-b14jc5=C5care b14bc6=C6male b14c01c6=C6birth_y b14ac6=C6rank b14dc6=C6edu 
-b14jc6=C6care.
+b14jc1=C1care_m b14bc2=C2male b14c01c2=C2birth_y b14ac2=C2rank b14dc2=C2edu 
+b14jc2=C2care_m b14bc3=C3male b14c01c3=C3birth_y b14ac3=C3rank b14dc3=C3edu 
+b14jc3=C3care_m b14bc4=C4male b14c01c4=C4birth_y b14ac4=C4rank b14dc4=C4edu 
+b14jc4=C4care_m b14bc5=C5male b14c01c5=C5birth_y b14ac5=C5rank b14dc5=C5edu 
+b14jc5=C5care_m b14bc6=C6male b14c01c6=C6birth_y b14ac6=C6rank b14dc6=C6edu 
+b14jc6=C6care_m c03a02=ann_wage c03b02=Sann_wage c01a=housework c01b=Shousework.
+compute a16a=marry.
 recode Sbirth_y(96 thru 99=SYSMIS).
 recode work(1,2=1)(3=2)(0=0)(else=sysmis).
 recode Swork(1,2=1)(3=2)(0=0)(else=SYSMIS).
@@ -789,7 +858,7 @@ EXECUTE.
 DELETE VARIABLES a10a01 a33c01 b20df1 b20dm1 b23ef2 b23em2.
 select if (category=1).
 EXECUTE.
-save OUTFILE="D:\satis\RR2014.sav"
+save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2014.sav"
 /COMPRESSED.
 *RR2016.
 GET
@@ -811,13 +880,13 @@ a32a02=Soccu a31=Sworkfor a32b=Sworkers a32c02=Sworkplace a34b01=Sworkhrs
 a33a01=Swage b28a01=siblings b28a02=brother_old b28a03=brother_young 
 b28a04=sister_old b28a05=sister_young b15=children b15a=sons b15b=daughters 
 b16bc1=C1male b16c01c1=C1birth_y b16ac1=C1rank b16gc1=C1edu 
-b16ec1=C1care b16bc2=C2male b16c01c2=C2birth_y b16ac2=C2rank 
-b16gc2=C2edu b16ec2=C2care b16bc3=C3male b16c01c3=C3birth_y 
-b16ac3=C3rank b16gc3=C3edu b16ec3=C3care b16bc4=C4male 
-b16c01c4=C4birth_y b16ac4=C4rank b16gc4=C4edu b16ec4=C4care 
+b16ec1=C1care_m b16bc2=C2male b16c01c2=C2birth_y b16ac2=C2rank 
+b16gc2=C2edu b16ec2=C2care_m b16bc3=C3male b16c01c3=C3birth_y 
+b16ac3=C3rank b16gc3=C3edu b16ec3=C3care_m b16bc4=C4male 
+b16c01c4=C4birth_y b16ac4=C4rank b16gc4=C4edu b16ec4=C4care_m 
 b16bc5=C5male b16c01c5=C5birth_y b16ac5=C5rank b16gc5=C5edu 
-b16ec5=C5care b16bc6=C6male b16c01c6=C6birth_y b16ac6=C6rank 
-b16gc6=C6edu b16ec6=C6care a17a=marry
+b16ec5=C5care_m b16bc6=C6male b16c01c6=C6birth_y b16ac6=C6rank 
+b16gc6=C6edu b16ec6=C6care_m a17a=marry
 c05a01=pension.
 recode Sbirth_y(96 thru 99=SYSMIS).
 recode work(1,2=1)(3=2)(0=0)(else=sysmis).
@@ -870,13 +939,13 @@ a17c01=myear a28a01=Sbirth_y a27=Sedu a29=Shealth a30=Swork a32a01=Sindust
 a32a02=Soccu a31a=Sworkfor a32b=Sworkers a32c02=Sworkplace a34b=Sworkhrs 
 a33a01=Swage c11b01=Srwyear b11=children b11a=sons b11b=daughters 
 b12bc1=C1male b12c01z01c1=C1birth_y b12ac1=C1rank b12gc1=C1edu 
-b12ec1=C1care b12bc2=C2male b12c01z01c2=C2birth_y b12ac2=C2rank 
-b12gc2=C2edu b12ec2=C2care b12bc3=C3male b12c01z01c3=C3birth_y 
-b12ac3=C3rank b12gc3=C3edu b12ec3=C3care b12bc4=C4male 
-b12c01z01c4=C4birth_y b12ac4=C4rank b12gc4=C4edu b12ec4=C4care 
+b12ec1=C1care_m b12bc2=C2male b12c01z01c2=C2birth_y b12ac2=C2rank 
+b12gc2=C2edu b12ec2=C2care_m b12bc3=C3male b12c01z01c3=C3birth_y 
+b12ac3=C3rank b12gc3=C3edu b12ec3=C3care_m b12bc4=C4male 
+b12c01z01c4=C4birth_y b12ac4=C4rank b12gc4=C4edu b12ec4=C4care_m 
 b12bc5=C5male b12c01z01c5=C5birth_y b12ac5=C5rank b12gc5=C5edu 
-b12ec5=C5care b12bc6=C6male b12c01z01c6=C6birth_y b12ac6=C6rank 
-b12gc6=C6edu b12ec6=C6care
+b12ec5=C5care_m b12bc6=C6male b12c01z01c6=C6birth_y b12ac6=C6rank 
+b12gc6=C6edu b12ec6=C6care_m
 c09d01=pension.
 recode Sbirth_y(96 thru 99=SYSMIS).
 recode work(1,2=1)(3=2)(0=0)(else=sysmis).
