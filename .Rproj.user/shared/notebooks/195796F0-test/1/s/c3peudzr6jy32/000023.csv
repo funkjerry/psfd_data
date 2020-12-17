@@ -1,4 +1,0 @@
-"0","write.sav(df21,""RII2001_new.sav"")
-"
-"2","Error in write.sav(df21, ""RII2001_new.sav"") : 沒有這個函數 ""write.sav""
-"
