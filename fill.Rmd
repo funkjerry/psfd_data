@@ -1,0 +1,40 @@
+---
+title: "nafill"
+author: "Wang"
+date: "2020/12/18"
+output: html_document
+---
+
+```{r}
+library(zoo)
+library(haven)
+library(dplyr)
+library(tidyr)
+library(visdat)
+
+RIRR <- read_sav("D:satis/RIRR_new.sav")
+
+###天生資訊  
+RIRR %>%
+  group_by(id) %>%
+  fill(scale, male, birth_y, .direction = "downup") %>%
+  ungroup()->RIRRf
+RIRRf$age <- RIRRf$period-1911-RIRRf$birth_y
+
+sum(is.na(RIRRf$birth_y))
+
+#第一次工作內容應不會變    
+RIRRf %>%
+  group_by(id) %>%
+  fill(fworkfor, fwork_indust, fwork_occu, fwork_y, fwage, .direction = "downup") %>%
+  ungroup()->RIRRf
+
+#後天資訊往下遞補直到遇到下個回答資料
+RIRRf %>%
+  group_by(id) %>%
+  fill(grad_y, grad, edu, indust, occu, workfor, workers, workplace, workhrs, Sindust, Soccu, Sworkfor, Sworkers, Sworkplace, Sworkhrs, .direction = "down") %>%
+  ungroup()->RIRRf
+
+write_sav(RIRRf, "RIRRf.sav")
+```
+

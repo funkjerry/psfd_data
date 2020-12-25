@@ -224,7 +224,7 @@ SAVE OUTFILE='D:\satis\RI2009.sav'
   /COMPRESSED.
 *RI2016.
 GET
-  FILE="C:\Users\user\Documents\GitHub\psfd_data\RI2016_v201811_spss.sav"
+  FILE="D:\satis\RI2016_v201811_spss.sav"
 /keep x01 x01a x01b x02 x05 a01 a02a01 a04a a04b a04c b01 b02z01 b02z02 c02z01 c04a01 c04a02 c03 c04b c04c02 c06b01 c05a01 c13b 
 c14b01 c14b02 c14a c16a d01a d01c01 d11z01 d12 d13 d14z01 d16a01 d16a02 d15 d16b d16c02 d18b01 d17a01 d18c01 
 e01a e01b e01c e01d e01e e01f e01g e01h e01i e02a e02b e02c e02d e02e e02f e02g e02h e02i f06bf1 f06bm1 f06bf2 f06bm2 f13z01 f13z02 f13z03 f13z04 f13z05 
@@ -264,7 +264,7 @@ recode indust fwork_indust Sindust (1 thru 3=1)(5 thru 7=2)(8 thru 34=3)(35=4)(3
 (94 thru 96=19).
 EXECUTE.
 DELETE VARIABLES f06bf1 f06bm1 f06bf2 f06bm2 d01d d18c01.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RI2016.sav"
+save OUTFILE="D:\satis\RI2016.sav"
 /COMPRESSED.
 
 *RII2000 (804).
@@ -292,7 +292,7 @@ save OUTFILE= 'D:\satis\RII2000.sav'
 *RII2001 (1730).
 
 GET 
-  FILE='C:\Users\steve\Documents\GitHub\psfd_data\RII2001_c_V200707(spss).sav'
+  FILE='D:\satis\RII2001_c_V200707(spss).sav'
  /keep x01 x01a x01b x02 x05 a01 a02 a04 a03 c01a c03a01 c03a02 
 c03b c04 c06z02 c08 c07b c09z02 c09z03 c21a c21b c22 c24a c25 c26a c26b
 c28a01 c28a02 c28b c31 c30 g03a g03b g03c f01 b09 d11ac1 d11ac2 d11ac3 d11ac4 e01a e01b c01b c26b.
@@ -317,12 +317,12 @@ if (c21b=4) marry =6.
 recode indust Sindust(1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5)(51 thru 59=6)(61 thru 63=7)(71,72=8)
 (64=9)(73,94=10)(81,82,86=11)(83=12)(84=13)(85,92=14)(90,91,99=15)(93=16)(95,96=17)(97=18)(98,100=19).
 EXECUTE.
-save outfile= 'C:\Users\steve\Documents\GitHub\psfd_data\RII2001.sav'
+save outfile= 'D:\satis\RII2001.sav'
  /COMPRESSED.
 
 *RIII2001 (726).
 GET 
-  FILE='C:\Users\user\Documents\GitHub\psfd_data\RIII2001_c_V200707(spss).sav'
+  FILE='D:\satis\RIII2001_c_V200707(spss).sav'
    /keep x01 x01a x01b x05 a01 a02 a03a a03b a05a01 a05a02 a05b a08 a07b a11a 
 a11b a12 a14a a15 a16a a16b a18a01 a18a02 a18b a21 a20 d01 
 b12ac1 b12ac2 b12ac3 b12ac4 c01a c01b.
@@ -344,7 +344,7 @@ recode indust Sindust(1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5
 compute period = 2001.
 EXECUTE.
 delete variables a11b.
-save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RIII2001.sav'
+save outfile= 'D:\satis\RIII2001.sav'
  /COMPRESSED.
 
 *RR2002 (2424).
@@ -366,18 +366,18 @@ recode work Swork(1,2,3 =1)(4,5,6=2)(else=SYSMIS).
 recode indust Sindust(1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=5)(51 thru 59=6)(61 thru 63=7)(71,72=8)
 (64=9)(73,94=10)(81,82,86=11)(83=12)(84=13)(85,92=14)(90,91,99=15)(93=16)(95,96=17)(97=18)(98,100=19).
 EXECUTE.
-save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2002.sav'
+save outfile= 'D:\satis\RR2002.sav'
  /COMPRESSED.
-
-GET file="C:\Users\user\Documents\GitHub\psfd_data\RII2001_new.sav".
+*合併成RR2001.
+GET file="D:\satis\RII2001_new.sav".
 dataset name RII2001.
-GET file="C:\Users\user\Documents\GitHub\psfd_data\RIII2001_new.sav".
+GET file="D:\satis\RIII2001_new.sav".
 dataset name RIII2001.
 ADD FILES FILE = RII2001
    /FILE = RIII2001.
 dataset name RR2001.
 dataset activate RR2001.
-save outfile="C:\Users\user\Documents\GitHub\psfd_data\RR2001_new.sav".
+save outfile="D:\satis\RR2001_new.sav".
 EXECUTE.
 
 *RR2003 (2317).
@@ -388,7 +388,7 @@ RENAME VARIABLES
 x01=id x05=district a01=male a03=health.
 compute period=2003.
 EXECUTE.
-
+*從RR2004取出有關於2003年的資料.
 GET FILE="D:\satis\riirvrvi2004_c_v201401_spss.sav"
    /keep x01 a12 a16b01 a16b02 a16c a16d a17a02 a20 a19b d03b02 a24a a36 a40b01 a40b02 a40c a40d a41a02 a44 a43b.
 RENAME VARIABLES x01=id a12=work a16b01=indust a16b02=occu a16c=workfor a16d=workers a17a02=workplace
@@ -399,7 +399,7 @@ recode indust Sindust (1 thru 3=1)(11 thru 18=2)(20 thru 39=3)(41 thru 43=4)(44=
 recode marry (1=3)(2=1).
 EXECUTE.
 DATASET NAME RR2003b.
-*透過id和Y1新增a17d、a17e變項.
+
 DATASET ACTIVATE RR2003.
 SORT CASES BY id.
 DATASET ACTIVATE RR2003b.
@@ -414,7 +414,7 @@ dataset activate RR2003all.
 select if period=2003.
 EXECUTE.
 
-save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2003.sav'
+save outfile= 'D:\satis\RR2003.sav'
  /COMPRESSED.
 
 *RR2004 (3024).
@@ -444,19 +444,19 @@ recode marry (1=3)(2=1).
 recode period(SYSMIS=2004).
 recode Sbirth_y(0=SYSMIS).
 EXECUTE.
-save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2004.sav'
+save outfile= 'D:\satis\RR2004.sav'
  /COMPRESSED.
 
-get file ="C:\Users\user\Documents\GitHub\psfd_data\RR2003_new.sav".
+get file ="D:\satis\RR2003_new.sav".
 dataset name RR2003a.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RI2003.sav".
+get file="D:\satis\RI2003.sav".
 dataset name RR2003b.
 dataset activate RR2003b.
 Add files file=RR2003b
    /file=RR2003a.
 EXECUTE.
 dataset name RR2003all.
-save outfile ="C:\Users\user\Documents\GitHub\psfd_data\RR2003_new2.sav".
+save outfile ="D:\satis\RR2003_new2.sav".
 
 *RR2005 (2880).
 GET file="D:\satis\RR2005_c_V200701(SPSS).sav"
@@ -474,6 +474,7 @@ f01b=love_mom f01c=love_bro f01d=love_sis f01e=love_S f01f=love_son f01g=love_da
 b13bc1=C1male b13c01c1=C1birth_y b13ac1=C1rank b13bc2=C2male b13c01c2=C2birth_y 
 b13ac2=C2rank b13bc3=C3male b13c01c3=C3birth_y b13ac3=C3rank b13bc4=C4male 
 b13c01c4=C4birth_y b13ac4=C4rank c01a=housework c01b=Shousework c03a02=ann_wage c03b02=Sann_wage. 
+compute a22=marry.
 recode cohabit_f(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_m(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
 recode cohabit_Sf(0=0)(8=1)(1 thru 7=2)(else=SYSMIS).
@@ -487,7 +488,7 @@ recode Sbirth_y(0=SYSMIS).
 recode workers Sworkers(7=6)(8=7).
 SELECT IF category=1.
 EXECUTE.
-save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2005.sav'
+save outfile= 'D:\satis\RR2005.sav'
  /COMPRESSED.
 
 *RR2006 (2772).
@@ -518,7 +519,7 @@ recode pension(2,3=2)(else=SYSMIS).
 recode workers Sworkers(7=6)(8=7).
 SELECT IF category=1.
 EXECUTE.
-save outfile= 'C:\Users\user\Documents\GitHub\psfd_data\RR2006.sav'
+save outfile= 'D:\satis\RR2006.sav'
  /COMPRESSED.
 
 *RR2007.
@@ -560,7 +561,7 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b14gf1 b14gm1 b14gf2 b14gm2.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2007.sav"
+save OUTFILE="D:\satis\RR2007.sav"
 /COMPRESSED.
 
 *RR2008.
@@ -606,7 +607,7 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16b b17b b20b b21b.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2008.sav"
+save OUTFILE="D:\satis\RR2008.sav"
 /COMPRESSED.
 
 *RR2009.
@@ -657,7 +658,7 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2009.sav"
+save OUTFILE="D:\satis\RR2009.sav"
 /COMPRESSED.
 *RR2010.
 GET
@@ -704,19 +705,19 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2010.sav"
+save OUTFILE="D:\satis\RR2010.sav"
 /COMPRESSED.
 
-get file ="C:\Users\user\Documents\GitHub\psfd_data\RR2009_new.sav".
+get file ="D:\satis\RR2009_new.sav".
 dataset name RR2009a.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RI2009.sav".
+get file="D:\satis\RI2009.sav".
 dataset name RR2009b.
 dataset activate RR2009b.
 Add files file=RR2009b
    /file=RR2009a.
 EXECUTE.
 dataset name RR2009all.
-save outfile ="C:\Users\user\Documents\GitHub\psfd_data\RR2009_new2.sav".
+save outfile ="D:\satis\RR2009_new2.sav".
 
 *RR2011.
 GET
@@ -763,7 +764,7 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2011.sav"
+save OUTFILE="D:\satis\RR2011.sav"
 /COMPRESSED.
 *RR2012.
 GET
@@ -811,7 +812,7 @@ EXECUTE.
 DELETE VARIABLES a11b01 a11b02 a26b01 a26b02 b16c b17c  b20c b21c.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2012.sav"
+save OUTFILE="D:\satis\RR2012.sav"
 /COMPRESSED.
 *RR2014.
 GET
@@ -858,7 +859,7 @@ EXECUTE.
 DELETE VARIABLES a10a01 a33c01 b20df1 b20dm1 b23ef2 b23em2.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2014.sav"
+save OUTFILE="D:\satis\RR2014.sav"
 /COMPRESSED.
 *RR2016.
 GET
@@ -916,19 +917,19 @@ EXECUTE.
 DELETE VARIABLES a12a01 a34c01 b19bf1 b19bm1 b24bf2 b24bm2.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2016.sav"
+save OUTFILE="D:\satis\RR2016.sav"
 /COMPRESSED.
 
-get file ="C:\Users\user\Documents\GitHub\psfd_data\RR2016_new.sav".
+get file ="D:\satis\RR2016_new.sav".
 dataset name RR2016a.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RI2016.sav".
+get file="D:\satis\RI2016.sav".
 dataset name RR2016b.
 dataset activate RR2016b.
 Add files file=RR2016b
    /file=RR2016a.
 EXECUTE.
 dataset name RR2016all.
-save outfile ="C:\Users\user\Documents\GitHub\psfd_data\RR2016_new2.sav".
+save outfile ="D:\satis\RR2016_new2.sav".
 *RR2018.
 GET
   FILE='D:\satis\RR2018_v201907_spss.sav'
@@ -986,7 +987,7 @@ EXECUTE.
 DELETE VARIABLES a12a01 a34c01 b15bf1 b15bm1 b20bf2 b20bm2.
 select if (category=1).
 EXECUTE.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2018.sav"
+save OUTFILE="D:\satis\RR2018.sav"
 /COMPRESSED.
 
 *RR2020.
@@ -1045,49 +1046,51 @@ compute Sseniority=(period-1911)-w39z01.
 recode cohabit_f cohabit_m cohabit_Sf cohabit_Sm(0=1)(1 thru 7=2)(else=SYSMIS).
 EXECUTE.
 DELETE VARIABLES w10z01 w20b w24a w24b w22z01 w24d01 w32a01 w32b01 w39z01.
-save OUTFILE="C:\Users\user\Documents\GitHub\psfd_data\RR2020.sav"
+save OUTFILE="D:\satis\RR2020.sav"
 /COMPRESSED.
 
 
-get file="C:\Users\user\Documents\GitHub\psfd_data\RI2000.sav".
+
+*從R取出檔案在spss合併.
+get file="D:\satis\RI2000.sav".
 dataset name RI2000.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RI1999.sav".
+get file="D:\satis\RI1999.sav".
 dataset name RI1999.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RII2000.sav".
+get file="D:\satis\RII2000.sav".
 dataset name RII2000.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2001_new.sav".
+get file="D:\satis\RR2001_new.sav".
 dataset name RR2001.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2002_new.sav".
+get file="D:\satis\RR2002_new.sav".
 dataset name RR2002.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2003_new2.sav".
+get file="D:\satis\RR2003_new2.sav".
 dataset name RR2003.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2004_new.sav".
+get file="D:\satis\RR2004_new.sav".
 dataset name RR2004.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2005_new.sav".
+get file="D:\satis\RR2005_new.sav".
 dataset name RR2005.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2006_new.sav".
+get file="D:\satis\RR2006_new.sav".
 dataset name RR2006.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2007_new.sav".
+get file="D:\satis\RR2007_new.sav".
 dataset name RR2007.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2008_new.sav".
+get file="D:\satis\RR2008_new.sav".
 dataset name RR2008.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2009_new2.sav".
+get file="D:\satis\RR2009_new2.sav".
 dataset name RR2009.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2010_new.sav".
+get file="D:\satis\RR2010_new.sav".
 dataset name RR2010.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2011_new.sav".
+get file="D:\satis\RR2011_new.sav".
 dataset name RR2011.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2012_new.sav".
+get file="D:\satis\RR2012_new.sav".
 dataset name RR2012.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2014_new.sav".
+get file="D:\satis\RR2014_new.sav".
 dataset name RR2014.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2016_new2.sav".
+get file="D:\satis\RR2016_new2.sav".
 dataset name RR2016.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2018_new.sav".
+get file="D:\satis\RR2018_new.sav".
 dataset name RR2018.
-get file="C:\Users\user\Documents\GitHub\psfd_data\RR2020_new.sav".
+get file="D:\satis\RR2020_new.sav".
 dataset name RR2020.
-*合併.
+
 DATASET ACTIVATE RR2016.
 ADD FILES FILE=RR2016
   /FILE=RI2000 
@@ -1149,8 +1152,6 @@ recode Swage(0=001).
 end if.
 compute age=period-1911-birth_y.
 EXECUTE.
-freq period.
-
 *變數標籤.
 variable labels grad"請問您是畢業,肄業,或是就學中?".
 variable labels work"您今年有工作嗎?" Swork"您配偶今年有工作嗎?".
@@ -1161,7 +1162,7 @@ value labels indust Sindust  fwork_indust rwork_indust Srwork_indust 0"00 跳答" 
 12"12 不動產業" 13"13 專業、科學及技術服務業" 14"14 支援服務業" 15"15 公共行政及國防；強制性社會安全" 16"16 教育業" 17"17 醫療保健及社會工作服務業"
 18"18 藝術、娛樂及休閒服務業" 19"19 其他服務業" 996"996 不知道" 998"998 拒答" 999"999 遺漏值".
 add value labels district workplace Sworkplace 409"409台中市" 440"440台中縣" 703"703台南市西區" 747"747台南市" 746"746台南縣" 853"853高雄縣" 854"854高雄市".
-add value labels work Swork  0"0 不適用" 1"1 有" 2"2 沒有"8"8 拒答".
+value labels work Swork  0"0 不適用" 1"1 有" 2"2 沒有"8"8 拒答".
 add value labels rworkfor Srworkfor workfor Sworkfor 9"09和他人合夥，沒有雇人" 94"94 其他(請說明)".
 add value labels workhrs Sworkhrs 991"991 不固定" 995"995 超過上限值" 997"997 其他".
 add value labels workers Sworkers 6"06 100-499人" 7"07 500人以上" 8""  94"94 其他(請說明)".
@@ -1215,7 +1216,7 @@ sort cases by id.
 
 
 SAVE OUTFILE
-   ="C:\Users\user\Documents\GitHub\psfd_data\RIRR_new.sav"
+   ="D:satis/RIRR_new.sav"
 /COMPRESSED.
 
 ERASE FILE="D:\satis\RI1999.sav".
